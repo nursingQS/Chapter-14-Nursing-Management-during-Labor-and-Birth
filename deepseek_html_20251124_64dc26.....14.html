@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nursing Management During Labor and Birth Flashcards</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FFA500 100%);
+            min-height: 100vh;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            height: 95vh;
+            max-height: 95vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #FF6B6B, #FFA500);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.1"><path d="M30,30 Q50,10 70,30 T90,50 T70,70 T50,90 T30,70 T10,50 T30,30 Z" fill="white"/></svg>');
+        }
+        
+        .header h1 {
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        .header .subtitle {
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .progress {
+            background: #8B0000;
+            height: 8px;
+            width: 100%;
+            flex-shrink: 0;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #FF6B6B, #FFA500);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .flashcard {
+            padding: clamp(10px, 3vw, 20px);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #f8f9fa;
+            overflow-y: auto;
+        }
+        
+        .question-container {
+            display: flex;
+            gap: clamp(10px, 2vw, 15px);
+            align-items: flex-start;
+            margin-bottom: clamp(10px, 2vw, 15px);
+        }
+        
+        .question-icon {
+            background: #FF6B6B;
+            color: white;
+            width: clamp(35px, 8vw, 50px);
+            height: clamp(35px, 8vw, 50px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            font-weight: bold;
+            flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+        }
+        
+        .question {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            line-height: 1.6;
+            color: #8B0000;
+            flex-grow: 1;
+            font-weight: 500;
+        }
+        
+        .multiple-select-indicator {
+            background: #e74c3c;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(6px, 1.5vw, 10px);
+            margin-bottom: clamp(10px, 2vw, 20px);
+            flex: 1;
+        }
+        
+        .option {
+            padding: clamp(10px, 2vw, 14px) clamp(12px, 2.5vw, 18px);
+            border: 2px solid #e8eaf6;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: clamp(8px, 1.5vw, 10px);
+            font-size: clamp(0.85rem, 2vw, 1rem);
+        }
+        
+        .option:hover {
+            background: #f0f3ff;
+            border-color: #b3b7ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .option-letter {
+            background: #f0f3ff;
+            color: #8B0000;
+            width: clamp(24px, 5vw, 28px);
+            height: clamp(24px, 5vw, 28px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+        }
+        
+        /* CORRECT - ALWAYS GREEN */
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        
+        .option.correct .option-letter {
+            background: #28a745;
+            color: white;
+        }
+        
+        /* INCORRECT - ALWAYS RED */
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        
+        .option.incorrect .option-letter {
+            background: #dc3545;
+            color: white;
+        }
+        
+        /* Remove the selected class to prevent blue highlighting */
+        
+        .feedback {
+            padding: clamp(12px, 2.5vw, 16px);
+            border-radius: 12px;
+            margin-bottom: clamp(10px, 2vw, 16px);
+            display: none;
+            align-items: center;
+            gap: clamp(8px, 1.5vw, 12px);
+            font-weight: 500;
+            font-size: clamp(0.85rem, 2vw, 1rem);
+        }
+        
+        .feedback.correct {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            display: flex;
+        }
+        
+        .feedback.incorrect {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+            display: flex;
+        }
+        
+        .feedback-icon {
+            font-size: clamp(1.2rem, 3vw, 1.4rem);
+            flex-shrink: 0;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: clamp(12px, 2.5vw, 16px) clamp(16px, 3vw, 24px);
+            background: #f0f3ff;
+            border-top: 1px solid #e8eaf6;
+            flex-shrink: 0;
+        }
+        
+        .counter {
+            font-weight: bold;
+            color: #8B0000;
+            font-size: clamp(0.85rem, 2vw, 1rem);
+        }
+        
+        .btn {
+            padding: clamp(10px, 2vw, 12px) clamp(15px, 2.5vw, 20px);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: clamp(6px, 1vw, 8px);
+            font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+            white-space: nowrap;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #FF6B6B, #FFA500);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 107, 107, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #b3b7ff, #FF6B6B);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(179, 183, 255, 0.3);
+        }
+        
+        .rationale {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 2px solid #ffd43b;
+            border-radius: 12px;
+            padding: clamp(12px, 2.5vw, 16px);
+            margin-top: clamp(8px, 1.5vw, 12px);
+            display: none;
+        }
+        
+        .rationale.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        .rationale h4 {
+            color: #856404;
+            margin-bottom: clamp(6px, 1.2vw, 10px);
+            display: flex;
+            align-items: center;
+            gap: clamp(6px, 1.2vw, 8px);
+            font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+        }
+        
+        .rationale p {
+            color: #856404;
+            line-height: 1.6;
+            font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .stats {
+            display: flex;
+            gap: clamp(8px, 1.5vw, 15px);
+            justify-content: center;
+            margin-top: clamp(4px, 1vw, 10px);
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            background: rgba(255,255,255,0.2);
+            padding: clamp(5px, 1vw, 6px) clamp(8px, 1.8vw, 12px);
+            border-radius: 20px;
+            font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+            white-space: nowrap;
+        }
+        
+        /* Cancel selection button */
+        .cancel-selection {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            margin: 0 auto clamp(10px, 2vw, 15px) auto;
+            display: none;
+        }
+        
+        .cancel-selection:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(231, 76, 60, 0.3);
+        }
+        
+        .cancel-selection.show {
+            display: flex;
+        }
+        
+        /* Study mode controls */
+        .study-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .study-btn {
+            padding: 8px 16px;
+            border: 2px solid #FF6B6B;
+            background: white;
+            color: #FF6B6B;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .study-btn.active {
+            background: #FF6B6B;
+            color: white;
+        }
+        
+        .study-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 107, 107, 0.2);
+        }
+        
+        /* Multiple select instructions */
+        .multiple-select-instructions {
+            text-align: center;
+            color: #e74c3c;
+            font-weight: 500;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👩‍⚕️ Nursing Management During Labor and Birth</h1>
+            <div class="subtitle">Chapter 14 - 30 Questions | Multiple-Select Enabled</div>
+            <div class="stats">
+                <div class="stat">🎯 30 Questions</div>
+                <div class="stat">📖 Detailed Rationales</div>
+                <div class="stat">🔢 5 Multiple-Answer Questions</div>
+                <div class="stat">↩️ Cancel Wrong Answers</div>
+            </div>
+        </div>
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="flashcard">
+            <div class="study-controls">
+                <button class="study-btn active" id="allQuestionsBtn" onclick="setStudyMode('all')">All Questions</button>
+                <button class="study-btn" id="multipleSelectBtn" onclick="setStudyMode('multiple')">Multiple-Select Only</button>
+                <button class="study-btn" id="singleSelectBtn" onclick="setStudyMode('single')">Single-Select Only</button>
+                <button class="study-btn" id="incorrectBtn" onclick="setStudyMode('incorrect')">Review Incorrect</button>
+            </div>
+            
+            <div class="question-container">
+                <div class="question-icon">?</div>
+                <div class="question" id="question"></div>
+                <div class="multiple-select-indicator" id="multipleSelectIndicator" style="display: none;">Multiple Answers</div>
+            </div>
+            
+            <div class="multiple-select-instructions" id="multipleSelectInstructions" style="display: none;">
+                💡 Select ALL correct answers - This question has multiple correct options
+            </div>
+            
+            <div class="options" id="options"></div>
+            
+            <!-- Cancel Selection Button - Only shows for wrong answers -->
+            <button class="btn cancel-selection" id="cancelBtn" onclick="cancelSelection()">
+                ↩️ Cancel Selection
+            </button>
+            
+            <div class="feedback" id="feedback">
+                <div class="feedback-icon" id="feedbackIcon"></div>
+                <div id="feedbackText"></div>
+            </div>
+            <div class="rationale" id="rationale">
+                <h4>💡 Rationale:</h4>
+                <p id="rationaleText"></p>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <button class="btn btn-secondary" id="prevBtn" onclick="previousCard()">
+                ⬅️ Previous
+            </button>
+            <div class="counter" id="counter">1/30</div>
+            <button class="btn btn-primary" id="nextBtn" onclick="nextCard()">
+                Next ➡️
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "1. A woman in labor who received an opioid for pain relief develops respiratory depression. The nurse would expect which agent to be administered?",
+                options: [
+                    "butorphanol",
+                    "fentanyl",
+                    "naloxone",
+                    "promethazine"
+                ],
+                correct: 2,
+                rationale: "Naloxone is an opioid antagonist used to reverse the effects of opioids such as respiratory depression. Butorphanol and fentanyl are opioids and would cause further respiratory depression. Promethazine is an ataractic used as an adjunct to potentiate the effectiveness of the opioid."
+            },
+            {
+                question: "2. A client's membranes spontaneously ruptured, as evidenced by a gush of clear fluid with a contraction. What would the nurse do next?",
+                options: [
+                    "Check the fetal heart rate.",
+                    "Perform a vaginal exam.",
+                    "Notify the primary care provider immediately.",
+                    "Change the linen saver pad."
+                ],
+                correct: 0,
+                rationale: "When membranes rupture, the priority focus is on assessing fetal heart rate first to identify a deceleration, which might indicate cord compression secondary to cord prolapse. A vaginal exam may be done later to evaluate for continued progression of labor. The primary care provider should be notified, but this is not a priority at this time. Changing the linen saver pad would be appropriate once the fetal status is determined and the primary care provider has been notified."
+            },
+            {
+                question: "3. A woman is admitted to the labor and birthing suite. Vaginal examination reveals that the presenting part is approximately 2 cm above the ischial spines. The nurse documents this finding as:",
+                options: [
+                    "+2 station.",
+                    "0 station.",
+                    "-2 station.",
+                    "crowning."
+                ],
+                correct: 2,
+                rationale: "The ischial spines serve as landmarks and are designated as zero status. If the presenting part is palpated higher than the maternal ischial spines, a negative number is assigned. Therefore, the nurse would document the finding as -2 station. If the presenting part is below the ischial spines, then the station would be +2. Crowning refers to the appearance of the fetal head at the vaginal opening."
+            },
+            {
+                question: "4. A client states, \"I think my water broke! I felt this gush of fluid between my legs.\" The nurse tests the fluid with nitrazine paper and confirms membrane rupture if the swab turns:",
+                options: [
+                    "yellow.",
+                    "olive green.",
+                    "pink.",
+                    "blue."
+                ],
+                correct: 3,
+                rationale: "Amniotic fluid is alkaline and turns Nitrazine paper blue. Nitrazine swabs that remain yellow to olive green suggests that the membranes are most likely intact."
+            },
+            {
+                question: "5. A woman in labor is to receive continuous internal electronic fetal monitoring. The nurse prepares the client for this monitoring based on the understanding that which criterion must be present?",
+                options: [
+                    "intact membranes",
+                    "cervical dilation of 2 cm or more",
+                    "floating presenting fetal part",
+                    "a neonatologist to insert the electrode"
+                ],
+                correct: 1,
+                rationale: "For continuous internal electronic fetal monitoring, four criteria must be met: ruptured membranes, cervical dilation of at least 2 cm, fetal presenting part low enough to allow placement of the electrode, and a skilled practitioner available to insert the electrode."
+            },
+            {
+                question: "6. A woman in labor has chosen to use hydrotherapy as a method of pain relief. Which statement by the woman would lead the nurse to suspect that the woman needs additional teaching?",
+                options: [
+                    "\"The warmth and buoyancy of the water has a nice relaxing effect.\"",
+                    "\"I can stay in the bath for as long as I feel comfortable.\"",
+                    "\"My cervix should be dilated more than 5 cm before I try using this method.\"",
+                    "\"The temperature of the water should be at least 105° (40.5°).\""
+                ],
+                correct: 3,
+                rationale: "Hydrotherapy is an effective pain relief method. The water temperature should not exceed body temperature. Therefore, a temperature of 105° (40.5°) would be too warm. The warmth and buoyancy have a relaxing effect, and women are encouraged to stay in the bath as long as they feel comfortable. The woman should be in active labor with cervical dilation greater than 5 cm."
+            },
+            {
+                question: "7. A woman in labor received an opioid close to the time of birth. The nurse would assess the newborn for which effect?",
+                options: [
+                    "respiratory depression",
+                    "urinary retention",
+                    "abdominal distention",
+                    "hyperreflexia"
+                ],
+                correct: 0,
+                rationale: "Opioids given close to the time of birth can cause central nervous system depression, including respiratory depression, in the newborn, necessitating the administration of naloxone. Urinary retention may occur in the woman who received neuraxial opioids. Abdominal distention is not associated with opioid administration. Hyporeflexia would be more commonly associated with central nervous system depression due to opioids."
+            },
+            {
+                question: "8. When applying the ultrasound transducer for continuous external electronic fetal monitoring, the nurse would place the transducer at which location on the client's body to record the FHR?",
+                options: [
+                    "over the uterine fundus where contractions are most intense",
+                    "above the umbilicus toward the right side of the diaphragm",
+                    "between the umbilicus and the symphysis pubis",
+                    "between the xiphoid process and umbilicus"
+                ],
+                correct: 2,
+                rationale: "The ultrasound transducer is positioned on the maternal abdomen in the midline between the umbilicus and the symphysis pubis. The tocotransducer is placed over the uterine fundus in the area of greatest contractility."
+            },
+            {
+                question: "9. After describing continuous internal electronic fetal monitoring to a laboring woman and her partner, which statement by the woman would indicate the need for additional teaching?",
+                options: [
+                    "\"This type of monitoring is the most accurate method for our baby.\"",
+                    "\"Unfortunately, I'm going to have to stay quite still in bed while it is in place.\"",
+                    "\"This type of monitoring can only be used after my membranes rupture.\"",
+                    "\"You'll be inserting a special electrode into my baby's scalp.\""
+                ],
+                correct: 1,
+                rationale: "With continuous internal electronic monitoring, maternal position changes and movement do not interfere with the quality of the tracing. Continuous internal monitoring is considered the most accurate method, but it can be used only if certain criteria are met, such as rupture of membranes. A spiral electrode is inserted into the fetal presenting part, usually the head."
+            },
+            {
+                question: "10. Which action is a priority when caring for a woman during the fourth stage of labor?",
+                options: [
+                    "assessing the uterine fundus",
+                    "offering fluids as indicated",
+                    "encouraging the woman to void",
+                    "assisting with perineal care"
+                ],
+                correct: 0,
+                rationale: "During the fourth stage of labor, a priority is to assess the woman's fundus to prevent postpartum hemorrhage. Offering fluids, encouraging voiding, and assisting with perineal care are important but not an immediate priority."
+            },
+            {
+                question: "11. When palpating the fundus during a contraction, the nurse notes that it feels like a chin. The nurse interprets this finding as indicating which type of contraction?",
+                options: [
+                    "intense",
+                    "strong",
+                    "moderate",
+                    "mild"
+                ],
+                correct: 2,
+                rationale: "A contraction that feels like the chin typically represents a moderate contraction. A contraction described as feeling like the tip of the nose indicates a mild contraction. A strong or intense contraction feels like the forehead."
+            },
+            {
+                question: "12. When planning the care of a woman in the latent phase of labor, the nurse would anticipate assessing the fetal heart rate at which interval?",
+                options: [
+                    "every 30 to 60 minutes",
+                    "every 60 to 90 minutes",
+                    "every 15 to 30 minutes",
+                    "every 10 to 15 minutes"
+                ],
+                correct: 0,
+                rationale: "FHR is assessed every 30 to 60 minutes during the latent phase of labor and every 15 to 30 minutes during the active phase. The woman's temperature is typically assessed every 4 hours during the first stage of labor and every 2 hours after ruptured membranes. Blood pressure, pulse, and respirations are assessed every hour during the latent phase and every 30 minutes during the active and transition phases. Contractions are assessed every 30 to 60 minutes during the latent phase and every 15 to 30 minutes during the active phase, and every 15 minutes during transition."
+            },
+            {
+                question: "13. A nurse palpates a woman's fundus to determine contraction intensity. What would be most appropriate for the nurse to use for palpation?",
+                options: [
+                    "finger pads",
+                    "palm of the hand",
+                    "finger tips",
+                    "back of the hand"
+                ],
+                correct: 0,
+                rationale: "To palpate the fundus for contraction intensity, the nurse would place the pads of the fingers on the fundus and describe how it feels. Using the finger tips, palm, or back of the hand would be inappropriate."
+            },
+            {
+                question: "14. A woman's amniotic fluid is noted to be cloudy. The nurse interprets this finding as:",
+                options: [
+                    "normal.",
+                    "a possible infection.",
+                    "meconium passage.",
+                    "transient fetal hypoxia."
+                ],
+                correct: 1,
+                rationale: "Amniotic fluid should be clear when the membranes rupture, either spontaneously or artificially through an amniotomy (a disposable plastic hook [Amnihook] is used to perforate the amniotic sac). Cloudy or foul-smelling amniotic fluid indicates infection. Green fluid may indicate that the fetus has passed meconium secondary to transient hypoxia, prolonged pregnancy, cord compression, intrauterine growth restriction, maternal hypertension, diabetes, or chorioamnionitis; however, it is considered a normal occurrence if the fetus is in a breech presentation."
+            },
+            {
+                question: "15. A nurse is conducting a class for a group of nurses who are newly hired for the labor and birth unit. After teaching the group about fetal heart rate patterns, the nurse determines the need for additional teaching when the group identifies which finding as indicating normal fetal acid–base status? Select all that apply.",
+                options: [
+                    "sinusoidal pattern",
+                    "recurrent variable decelerations",
+                    "fetal bradycardia",
+                    "absence of late decelerations",
+                    "moderate baseline variability"
+                ],
+                correct: [0, 1, 2],
+                rationale: "Predictors of normal fetal acid–base status include a baseline rate between 110 and 160 bpm, moderate baseline variability, and absences of later or variable decelerations. Sinusoidal pattern, recurrent variable decelerations, and fetal bradycardia are predictive of abnormal fetal acid–base status."
+            },
+            {
+                question: "16. A nurse is reviewing the fetal heart rate pattern and observes abrupt decreases in FHR below the baseline, appearing as a U-shape. The nurse interprets these changes as reflecting which type of deceleration?",
+                options: [
+                    "early decelerations",
+                    "variable decelerations",
+                    "prolonged decelerations",
+                    "late decelerations"
+                ],
+                correct: 1,
+                rationale: "Variable decelerations present as visually apparent abrupt decreases in FHR below baseline and have an unpredictable shape on the FHR baseline, possibly demonstrating no consistent relationship to uterine contractions. The shape of variable decelerations may be U, V, or W, or they may not resemble other patterns. Early decelerations are visually apparent, usually symmetrical and characterized by a gradual decrease in the FHR in which the nadir (lowest point) occurs at the peak of the contraction. They are thought to be a result of fetal head compression that results in a reflex vagal response with a resultant slowing of the FHR during uterine contractions. Late decelerations are visually apparent, usually symmetrical, transitory decreases in FHR that occur after the peak of the contraction. The FHR does not return to baseline levels until well after the contraction has ended. Delayed timing of the deceleration occurs, with the nadir of the uterine contraction. Late decelerations are associated with uteroplacental insufficiency. Prolonged decelerations are abrupt FHR declines of at least 15 bpm that last longer than 2 minutes but less than 10 minutes."
+            },
+            {
+                question: "17. A nurse is explaining the use of effleurage as a pain relief measure during labor. Which statement would the nurse most likely use when explaining this measure?",
+                options: [
+                    "\"This technique focuses on manipulating body tissues.\"",
+                    "\"The technique requires focusing on a specific stimulus.\"",
+                    "\"This technique redirects energy fields that lead to pain.\"",
+                    "\"The technique involves light stroking of the abdomen with breathing.\""
+                ],
+                correct: 3,
+                rationale: "Effleurage involves light stroking of the abdomen in rhythm with breathing. Therapeutic touch is an energy therapy and is based on the premise that the body contains energy fields that lead to either good or ill health and that the hands can be used to redirect the energy fields that lead to pain. Attention focusing and imagery involve focusing on a specific stimulus. Massage focuses on manipulating body tissues."
+            },
+            {
+                question: "18. A nurse is reading a journal article about the various medications used for pain relief during labor. Which drug would the nurse note as producing amnesia but no analgesia?",
+                options: [
+                    "midazolam",
+                    "prochlorperazine",
+                    "fentanyl",
+                    "meperidine"
+                ],
+                correct: 0,
+                rationale: "Midazolam is given intravenously and produces good amnesia but no analgesia. It is most commonly used as an adjunct for anesthesia. Prochlorperazine is typically given with an opioid such as morphine to counteract the nausea of the opioid. Fentanyl and meperidine are opioids that produce analgesia."
+            },
+            {
+                question: "19. A nurse is describing the different types of regional analgesia and anesthesia for labor to a group of pregnant women. Which statement by the group indicates that the teaching was successful?",
+                options: [
+                    "\"We can get up and walk around after receiving combined spinal–epidural analgesia.\"",
+                    "\"Higher anesthetic doses are needed for patient-controlled epidural analgesia.\"",
+                    "\"A pudendal nerve block is highly effective for pain relief in the first stage of labor.\"",
+                    "\"Local infiltration using lidocaine is an appropriate method for controlling contraction pain.\""
+                ],
+                correct: 0,
+                rationale: "When compared with traditional epidural or spinal analgesia, which often keeps the woman lying in bed, combined spinal–epidural analgesia allows the woman to ambulate (\"walking epidural\"). Patient-controlled epidural analgesia provides equivalent analgesia with lower anesthetic use, lower rates of supplementation, and higher client satisfaction. Pudendal nerve blocks are used for the second stage of labor, an episiotomy, or an operative vaginal birth with outlet forceps or vacuum extractor. Local infiltration using lidocaine does not alter the pain of uterine contractions, but it does numb the immediate area of the episiotomy or laceration."
+            },
+            {
+                question: "20. A nurse is completing the assessment of a woman admitted to the labor and birth suite. Which information would the nurse expect to include as part of the physical assessment? Select all that apply.",
+                options: [
+                    "current pregnancy history",
+                    "fundal height measurement",
+                    "support system",
+                    "estimated date of birth",
+                    "membrane status",
+                    "contraction pattern"
+                ],
+                correct: [1, 4, 5],
+                rationale: "As part of the admission physical assessment, the nurse would assess fundal height, membrane status, and contractions. Current pregnancy history, support systems, and estimated date of birth would be obtained when collecting the maternal health history."
+            },
+            {
+                question: "21. A pregnant woman admitted to the labor and birth suite undergoes rapid HIV testing and is found to be HIV-positive. Which action would the nurse expect to include when developing a plan of care for this woman? Select all that apply.",
+                options: [
+                    "administrating of penicillin G at the onset of labor",
+                    "avoiding scalp electrodes for fetal monitoring",
+                    "refraining from obtaining fetal scalp blood for pH testing",
+                    "administering antiretroviral therapy at the onset of labor",
+                    "electing for the use of forceps-assisted birth"
+                ],
+                correct: [1, 2, 3],
+                rationale: "To reduce perinatal transmission, HIV-positive women are given a combination of antiretroviral drugs. To further reduce the risk of perinatal transmission, ACOG and the U.S. Public Health Service recommend that HIV-infected women with plasma viral loads of more than 1,000 copies per milliliter be counseled regarding the benefits of elective cesarean birth. Additional interventions to reduce the transmission risk would include avoiding use of scalp electrode for fetal monitoring or doing a scalp blood sampling for fetal pH, delaying amniotomy, encouraging formula feeding after birth, and avoiding invasive procedures such as forceps or vacuum-assisted devices."
+            },
+            {
+                question: "22. Which positions would be most appropriate for the nurse to suggest as a comfort measure to a woman who is in the first stage of labor? Select all that apply.",
+                options: [
+                    "walking with partner support",
+                    "straddling with forward leaning over a chair",
+                    "closed knee–chest position",
+                    "rocking back and forth with foot on chair",
+                    "supine with legs raised at a 90-degree angle"
+                ],
+                correct: [0, 1, 3],
+                rationale: "Positioning during the first stage of labor includes walking with support from the partner, side-lying with pillows between the knees, leaning forward by straddling a chair, table, or bed or kneeling over a birthing ball, lunging by rocking weight back and forth with a foot up on a chair or birthing ball, or an open knee–chest position."
+            },
+            {
+                question: "23. Which suggestion by the nurse about pushing would be most appropriate to a woman in the second stage of labor?",
+                options: [
+                    "\"Lying flat with your head elevated on two pillows makes pushing easier.\"",
+                    "\"Choose whatever method you feel most comfortable with for pushing.\"",
+                    "\"Let me help you decide when it is time to start pushing.\"",
+                    "\"Bear down like you're having a bowel movement with every contraction.\""
+                ],
+                correct: 1,
+                rationale: "The role of the nurse should be to support the woman in her choice of pushing method and to encourage confidence in her maternal instinct of when and how to push. In the absence of any complications, nurses should not be controlling this stage of labor, but empowering women to achieve a satisfying experience. Common practice in many labor units is still to coach women to use closed glottis pushing with every contraction, starting at 10 cm of dilation, a practice that is not supported by research. Research suggests that directed pushing during the second stage may be accompanied by a significant decline in fetal pH and may cause maternal muscle and nerve damage if done too early. Effective pushing can be achieved by assisting the woman to assume a more upright or squatting position. Supporting spontaneous pushing and encouraging women to choose their own method of pushing should be accepted as best clinical practice."
+            },
+            {
+                question: "24. A nurse is assessing a woman after birth and notes a second-degree laceration. The nurse interprets this as indicating that the tear extends through which area?",
+                options: [
+                    "skin",
+                    "muscles of perineal body",
+                    "anal sphincter",
+                    "anterior rectal wall"
+                ],
+                correct: 1,
+                rationale: "The extent of the laceration is defined by depth: a first-degree laceration extends through the skin; a second-degree laceration extends through the muscles of the perineal body; a third-degree laceration continues through the anal sphincter muscle; and a fourth-degree laceration also involves the anterior rectal wall."
+            },
+            {
+                question: "25. A nurse is assisting with the birth of a newborn. The fetal head has just emerged. Which action would be performed next?",
+                options: [
+                    "suctioning of the mouth and nose",
+                    "clamping of the umbilical cord",
+                    "checking for the cord around the neck",
+                    "drying of the newborn"
+                ],
+                correct: 2,
+                rationale: "Once the fetal head has emerged, the primary care provider explores the fetal neck to see if the umbilical cord is wrapped around it. If it is, the cord is slipped over the head to facilitate delivery. Then the health care provider suctions the newborn's mouth first (because the newborn is an obligate nose breather) and then the nares with a bulb syringe to prevent aspiration of mucus, amniotic fluid, or meconium. Finally the umbilical cord is double-clamped and cut between the clamps. The newborn is placed under the radiant warmer, dried, assessed, wrapped in warm blankets, and placed on the woman's abdomen for warmth and closeness."
+            },
+            {
+                question: "26. A nurse is providing care to a woman during the third stage of labor. Which finding would alert the nurse that the placenta is separating?",
+                options: [
+                    "boggy, soft uterus",
+                    "uterus becoming discoid shaped",
+                    "sudden gush of dark blood from the vagina",
+                    "shortening of the umbilical cord"
+                ],
+                correct: 2,
+                rationale: "Signs that the placenta is separating include a firmly contracting uterus; a change in uterine shape from discoid to globular ovoid; a sudden gush of dark blood from the vaginal opening; and lengthening of the umbilical cord protruding from the vagina."
+            },
+            {
+                question: "27. A nurse is preparing to auscultate the fetal heart rate of a pregnant woman at term admitted to the labor and birth suite. Assessment reveals that the fetus is in a cephalic presentation. At which area on the woman's body would the nurse best hear the sounds?",
+                options: [
+                    "At the level of the woman's umbilicus",
+                    "In the area above the woman's umbilicus",
+                    "In the woman's lower abdominal quadrant",
+                    "At the upper outer quadrant of the woman's abdomen"
+                ],
+                correct: 2,
+                rationale: "The fetal heart rate is heard most clearly at the fetal back. In a cephalic presentation, the fetal heart rate is best heard in the lower quadrant of the maternal abdomen. In a breech presentation, it is heard at or above the level of the maternal umbilicus."
+            },
+            {
+                question: "28. A pregnant woman is discussing nonpharmacologic pain control measures with the nurse in anticipation of labor. After discussing the various breathing patterns that can be used, the woman decides to use slow-paced breathing. Which instruction would the nurse provide to the woman about this technique?",
+                options: [
+                    "\"Inhale through your nose and exhale through pursed lips.\"",
+                    "\"Inhale and exhale through your mouth about 4 times in 5 seconds.\"",
+                    "\"Forcefully exhale every so often after inhaling and exhaling through your mouth.\"",
+                    "\"Take a cleansing breath before but not after each contraction.\""
+                ],
+                correct: 0,
+                rationale: "Many couples learn patterned-paced breathing during their childbirth education classes. Three levels may be taught, each beginning and ending with a cleansing breath or sigh after each contraction. In the first pattern, also known as slow-paced breathing, the woman inhales slowly through her nose and exhales through pursed lips. The breathing rate is typically 6 to 9 breaths/min. In the second pattern, the woman inhales and exhales through her mouth at a rate of 4 breaths every 5 seconds. The rate can be accelerated to 2 breaths/sec to assist her to relax. The third pattern is similar to the second pattern except that the breathing is punctuated every few breaths by a forceful exhalation through pursed lips. All breaths are kept equal and rhythmic and can increase as contractions increase in intensity."
+            },
+            {
+                question: "29. A nurse is performing Leopold maneuvers on a pregnant woman. The nurse determines which information with the first maneuver?",
+                options: [
+                    "Fetal presentation",
+                    "Fetal position",
+                    "Fetal attitude",
+                    "Fetal flexion"
+                ],
+                correct: 0,
+                rationale: "Leopold maneuvers are a method for determining the presentation, position, and lie of the fetus through the use of four specific steps. The first maneuver determines presentation; the second maneuver determines position; the third maneuver confirms presentation by feeling for the presenting part; the fourth maneuver determines attitude based on whether the fetal head is flexed and engaged in the pelvis."
+            },
+            {
+                question: "30. A pregnant woman with a fetus in the cephalic presentation is in the latent phase of the first stage of labor. Her membranes rupture spontaneously. The fluid is green in color. Which action by the nurse would be appropriate?",
+                options: [
+                    "Check the pH to ensure the fluid is amniotic fluid.",
+                    "Prepare to administer an antibiotic.",
+                    "Notify the health care provider about possible meconium.",
+                    "Check the maternal heart rate."
+                ],
+                correct: 2,
+                rationale: "Amniotic fluid should be clear when the membranes rupture. Green fluid may indicate that the fetus has passed meconium secondary to transient hypoxia, prolonged pregnancy, cord compression, intrauterine growth restriction, maternal hypertension, diabetes, or chorioamnionitis. Therefore, the nurse would notify the health care provider. Antibiotic therapy would be indicated if the fluid was cloudy or foul-smelling, suggesting an infection. Color of the fluid has nothing to do with the pH of the fluid. Spontaneous rupture of membranes can lead to cord compression, so checking fetal heart rate, not maternal heart rate, would be appropriate."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let selectedOption = null;
+        let score = 0;
+        let answers = Array(questions.length).fill(null);
+        let incorrectQuestions = [];
+        let studyMode = 'all'; // 'all', 'multiple', 'single', 'incorrect'
+        let filteredQuestions = [...questions];
+
+        function setStudyMode(mode) {
+            studyMode = mode;
+            
+            // Update button states
+            document.querySelectorAll('.study-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(mode + 'Btn').classList.add('active');
+            
+            // Filter questions based on mode
+            switch(mode) {
+                case 'all':
+                    filteredQuestions = [...questions];
+                    break;
+                case 'multiple':
+                    filteredQuestions = questions.filter(q => Array.isArray(q.correct) && q.correct.length > 1);
+                    break;
+                case 'single':
+                    filteredQuestions = questions.filter(q => !Array.isArray(q.correct) || q.correct.length === 1);
+                    break;
+                case 'incorrect':
+                    filteredQuestions = questions.filter((_, index) => incorrectQuestions.includes(index));
+                    if (filteredQuestions.length === 0) {
+                        alert('No incorrect questions to review yet!');
+                        filteredQuestions = [...questions];
+                    }
+                    break;
+            }
+            
+            currentQuestion = 0;
+            loadQuestion();
+        }
+
+        function isMultipleSelectQuestion(question) {
+            return Array.isArray(question.correct) && question.correct.length > 1;
+        }
+
+        function loadQuestion() {
+            if (filteredQuestions.length === 0) {
+                document.getElementById('question').textContent = "No questions available for the selected study mode.";
+                document.getElementById('options').innerHTML = '';
+                document.getElementById('counter').textContent = `0/0`;
+                return;
+            }
+
+            const question = filteredQuestions[currentQuestion];
+            const originalIndex = questions.indexOf(question);
+            
+            document.getElementById('question').textContent = question.question;
+            document.getElementById('counter').textContent = `${currentQuestion + 1}/${filteredQuestions.length}`;
+            
+            // Update progress bar
+            const progress = ((currentQuestion + 1) / filteredQuestions.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            
+            // Show/hide multiple select indicators
+            const isMultiple = isMultipleSelectQuestion(question);
+            document.getElementById('multipleSelectIndicator').style.display = isMultiple ? 'block' : 'none';
+            document.getElementById('multipleSelectInstructions').style.display = isMultiple ? 'block' : 'none';
+            
+            // Load options
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.innerHTML = `
+                    <div class="option-letter">${String.fromCharCode(65 + index)}</div>
+                    <div class="option-text">${option}</div>
+                `;
+                optionElement.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Reset feedback and rationale
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('rationale').className = 'rationale';
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            document.getElementById('nextBtn').textContent = currentQuestion === filteredQuestions.length - 1 ? 'Finish ➡️' : 'Next ➡️';
+            
+            // Check if we have a stored answer for this question
+            const storedAnswer = answers[originalIndex];
+            document.getElementById('nextBtn').disabled = storedAnswer === null || storedAnswer === undefined;
+            
+            // Reset cancel button visibility
+            document.getElementById('cancelBtn').classList.remove('show');
+            
+            // If this question was already answered, show the answer
+            if (storedAnswer !== null && storedAnswer !== undefined) {
+                if (Array.isArray(storedAnswer)) {
+                    // Multiple selection question
+                    storedAnswer.forEach(index => {
+                        selectOption(index, true);
+                    });
+                } else {
+                    // Single selection question
+                    selectOption(storedAnswer, true);
+                }
+            }
+        }
+
+        function selectOption(index, fromMemory = false) {
+            const question = filteredQuestions[currentQuestion];
+            const originalIndex = questions.indexOf(question);
+            
+            // Check if this is a multiple selection question
+            if (isMultipleSelectQuestion(question)) {
+                // Multiple selection logic
+                if (!fromMemory) {
+                    if (!answers[originalIndex]) {
+                        answers[originalIndex] = [];
+                    }
+                    
+                    const optionIndex = answers[originalIndex].indexOf(index);
+                    if (optionIndex === -1) {
+                        answers[originalIndex].push(index);
+                    } else {
+                        answers[originalIndex].splice(optionIndex, 1);
+                    }
+                }
+                
+                highlightSelectedOptions();
+                showFeedbackForMultiple();
+                
+                // Enable next button if at least one option is selected
+                document.getElementById('nextBtn').disabled = !answers[originalIndex] || answers[originalIndex].length === 0;
+                return;
+            }
+            
+            // Single selection logic
+            if (selectedOption !== null && !fromMemory) return;
+            
+            if (!fromMemory) {
+                selectedOption = index;
+                answers[originalIndex] = index;
+            }
+            
+            highlightSelectedOption(index);
+            showFeedback(index);
+            
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function highlightSelectedOption(index) {
+            const options = document.querySelectorAll('.option');
+            const question = filteredQuestions[currentQuestion];
+            const originalIndex = questions.indexOf(question);
+            
+            options.forEach((option, i) => {
+                option.classList.remove('correct', 'incorrect');
+                
+                if (i === index) {
+                    // ALWAYS show correct answers in GREEN
+                    if (i === question.correct) {
+                        option.classList.add('correct');
+                        if (!answers[originalIndex]) score++;
+                        document.getElementById('cancelBtn').classList.remove('show');
+                        
+                        // Remove from incorrect questions if it was there
+                        const incorrectIndex = incorrectQuestions.indexOf(originalIndex);
+                        if (incorrectIndex > -1) {
+                            incorrectQuestions.splice(incorrectIndex, 1);
+                        }
+                    } else {
+                        // ALWAYS show incorrect answers in RED
+                        option.classList.add('incorrect');
+                        // Also highlight the correct answer in GREEN
+                        options[question.correct].classList.add('correct');
+                        document.getElementById('cancelBtn').classList.add('show');
+                        
+                        // Add to incorrect questions
+                        if (!incorrectQuestions.includes(originalIndex)) {
+                            incorrectQuestions.push(originalIndex);
+                        }
+                    }
+                }
+            });
+        }
+
+        function highlightSelectedOptions() {
+            const options = document.querySelectorAll('.option');
+            const question = filteredQuestions[currentQuestion];
+            const originalIndex = questions.indexOf(question);
+            const selectedIndices = answers[originalIndex] || [];
+            
+            // First, highlight ALL correct answers in GREEN
+            question.correct.forEach(correctIndex => {
+                options[correctIndex].classList.add('correct');
+            });
+            
+            // Then, highlight selected options
+            options.forEach((option, i) => {
+                if (selectedIndices.includes(i)) {
+                    // If selected but incorrect, highlight in RED
+                    if (!question.correct.includes(i)) {
+                        option.classList.add('incorrect');
+                    }
+                }
+            });
+            
+            // Check if answer is correct and update score/tracking
+            const allCorrectSelected = question.correct.every(c => selectedIndices.includes(c));
+            const noIncorrectSelected = selectedIndices.every(s => question.correct.includes(s));
+            
+            if (allCorrectSelected && noIncorrectSelected) {
+                if (!answers[originalIndex]) score++;
+                // Remove from incorrect questions
+                const incorrectIndex = incorrectQuestions.indexOf(originalIndex);
+                if (incorrectIndex > -1) {
+                    incorrectQuestions.splice(incorrectIndex, 1);
+                }
+            } else {
+                // Add to incorrect questions
+                if (!incorrectQuestions.includes(originalIndex)) {
+                    incorrectQuestions.push(originalIndex);
+                }
+            }
+        }
+
+        function cancelSelection() {
+            const question = filteredQuestions[currentQuestion];
+            const originalIndex = questions.indexOf(question);
+            
+            selectedOption = null;
+            answers[originalIndex] = null;
+            
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+            });
+            
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('rationale').classList.remove('show');
+            document.getElementById('cancelBtn').classList.remove('show');
+            document.getElementById('nextBtn').disabled = true;
+        }
+
+        function showFeedback(index) {
+            const question = filteredQuestions[currentQuestion];
+            const feedback = document.getElementById('feedback');
+            const feedbackIcon = document.getElementById('feedbackIcon');
+            const feedbackText = document.getElementById('feedbackText');
+            const rationale = document.getElementById('rationale');
+            const rationaleText = document.getElementById('rationaleText');
+            
+            if (index === question.correct) {
+                feedback.className = 'feedback correct';
+                feedbackIcon.textContent = '✅';
+                feedbackText.textContent = 'Correct! Well done.';
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedbackIcon.textContent = '❌';
+                feedbackText.textContent = `Incorrect. The right answer is: ${String.fromCharCode(65 + question.correct)}`;
+            }
+            
+            feedback.style.display = 'flex';
+            rationaleText.textContent = question.rationale;
+            rationale.classList.add('show');
+        }
+
+        function showFeedbackForMultiple() {
+            const question = filteredQuestions[currentQuestion];
+            const originalIndex = questions.indexOf(question);
+            const feedback = document.getElementById('feedback');
+            const feedbackIcon = document.getElementById('feedbackIcon');
+            const feedbackText = document.getElementById('feedbackText');
+            const rationale = document.getElementById('rationale');
+            const rationaleText = document.getElementById('rationaleText');
+            
+            const selectedIndices = answers[originalIndex] || [];
+            const allCorrectSelected = question.correct.every(c => selectedIndices.includes(c));
+            const noIncorrectSelected = selectedIndices.every(s => question.correct.includes(s));
+            
+            if (allCorrectSelected && noIncorrectSelected) {
+                feedback.className = 'feedback correct';
+                feedbackIcon.textContent = '✅';
+                feedbackText.textContent = 'Correct! All right answers selected.';
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedbackIcon.textContent = '❌';
+                const correctLetters = question.correct.map(c => String.fromCharCode(65 + c)).join(', ');
+                feedbackText.textContent = `Incorrect. The right answers are: ${correctLetters}`;
+            }
+            
+            feedback.style.display = 'flex';
+            rationaleText.textContent = question.rationale;
+            rationale.classList.add('show');
+        }
+
+        function nextCard() {
+            if (currentQuestion < filteredQuestions.length - 1) {
+                currentQuestion++;
+                selectedOption = null;
+                loadQuestion();
+            } else {
+                const correctCount = questions.reduce((count, question, index) => {
+                    if (answers[index] === null || answers[index] === undefined) return count;
+                    
+                    if (Array.isArray(question.correct)) {
+                        const selected = answers[index] || [];
+                        const allCorrect = question.correct.every(c => selected.includes(c));
+                        const noIncorrect = selected.every(s => question.correct.includes(s));
+                        return allCorrect && noIncorrect ? count + 1 : count;
+                    } else {
+                        return answers[index] === question.correct ? count + 1 : count;
+                    }
+                }, 0);
+                
+                alert(`Quiz completed! Your score: ${correctCount}/${questions.length}\nIncorrect questions: ${incorrectQuestions.length}`);
+                
+                if (studyMode === 'incorrect' && incorrectQuestions.length > 0) {
+                    // Continue with incorrect questions
+                    filteredQuestions = questions.filter((_, index) => incorrectQuestions.includes(index));
+                    currentQuestion = 0;
+                    loadQuestion();
+                } else {
+                    // Reset to all questions
+                    currentQuestion = 0;
+                    selectedOption = null;
+                    score = 0;
+                    answers = Array(questions.length).fill(null);
+                    filteredQuestions = [...questions];
+                    setStudyMode('all');
+                }
+            }
+        }
+
+        function previousCard() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                const question = filteredQuestions[currentQuestion];
+                const originalIndex = questions.indexOf(question);
+                selectedOption = answers[originalIndex];
+                loadQuestion();
+            }
+        }
+
+        // Initialize the app
+        loadQuestion();
+    </script>
+</body>
+</html>
